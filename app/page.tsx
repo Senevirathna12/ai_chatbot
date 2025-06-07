@@ -50,7 +50,7 @@ export default function Chat() {
   }, []);
 
   const toggleChat = () => {
-    setIsChatOpen((prev) => !prev);
+    setIsChatOpen(!isChatOpen);
   };
 
   return (
@@ -73,6 +73,41 @@ export default function Chat() {
                 <ArrowDownCircleIcon className="size-12" />
               )}
             </Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {isChatOpen && (
+          <motion.div
+            initial={{ opacity: 0, scale:0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.3 }}
+            className="fixed bottom-20 right-4 z-50 w-[95%]md:w-[500px]"
+          >
+           <Card className="border-2">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-lg font-bold">Chat with NoteWorthy AI</CardTitle>
+              <Button variant="ghost" size="sm" onClick={toggleChat} className="py-0 px-2">
+                <X className="size-4" />
+                <span className="sr-only">Close chat</span>
+              </Button>
+            </CardHeader>
+            <CardContent >
+              <ScrollArea className="h-[300px] pr-4">
+               <div className="w-full mt-32 text-gray-500 text-center justify-center flex gap-3">
+                No messages yet. Start the conversation!
+               </div>
+              </ScrollArea>
+            </CardContent>
+            <CardFooter className="flex items-center gap-2 p-2">
+              <Input placeholder="Type your message..." />
+              <Button type="submit" size="icon">
+                <Send className="size-4" />
+              </Button>
+            </CardFooter>
+
+           </Card>
           </motion.div>
         )}
       </AnimatePresence>
