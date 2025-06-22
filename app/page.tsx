@@ -13,9 +13,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-
 import LandingSections from "@/components/LandingSections";
-
 import {
   X,
   MessageCircle,
