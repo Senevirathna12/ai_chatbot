@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Children } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -125,9 +125,53 @@ export default function Chat() {
                   {messages?.map((message, index) => (
                     <div
                       key={index}
-                      className="flex flex-col items-start space-y-2 px-4 py-3 text-sm"
+                      className={`mb-4 ${
+                        message.role === "user" ? "text-right" : "text-left"
+                      }`}
                     >
-                      cdnfbduiwbfouh
+                      <div
+                        className={`inline-block rounded-lg ${
+                          message.role === "user"
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-muted"
+                        }`}
+                      >
+                        <ReactMarkdown
+                          children={message.content}
+                          remarkPlugins={[remarkGfm]}
+                          components={{
+                            code({
+                              node,
+                              inline,
+                              className,
+                              children,
+                              ...props
+                            }) {
+                              return inline ? (
+                                <code
+                                  {...props}
+                                  className="bg-gray-200 px-1 rounded"
+                                >
+                                  {children}
+                                </code>
+                              ) : (
+                                <pre
+                                  {...props}
+                                  className="bg-gray-200 p-2 rounded"
+                                >
+                                  <code>{children}</code>
+                                </pre>
+                              );
+                            },
+                            ul: ({ children }) => (
+                              <ul className="list-disc ml-4">{children}</ul>
+                            ),
+                            ol: ({ children }) => (
+                              <ol className="list-decimal ml-4">{children}</ol>
+                            )
+                          }}
+                        />
+                      </div>
                     </div>
                   ))}
 
