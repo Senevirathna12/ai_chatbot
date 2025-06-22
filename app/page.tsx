@@ -40,6 +40,8 @@ export default function Chat() {
     error,
   } = useChat({ api: "api/gemini" });
 
+  const scrollRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 200) {
@@ -61,6 +63,12 @@ export default function Chat() {
   const toggleChat = () => {
     setIsChatOpen(!isChatOpen);
   };
+
+  useEffect(() => {
+    if (isChatOpen && scrollRef.current) {
+      scrollRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages, isChatOpen]);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -97,7 +105,7 @@ export default function Chat() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.3 }}
-            className="fixed bottom-20 right-4 z-50 w-[95%]md:w-[500px]"
+            className="fixed bottom-20 right-4 z-50 w-[95%] md:w-[500px]"
           >
             <Card className="border-2">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
@@ -130,7 +138,7 @@ export default function Chat() {
                       }`}
                     >
                       <div
-                        className={`inline-block rounded-lg ${
+                        className={`inline-block p-4 rounded-lg ${
                           message.role === "user"
                             ? "bg-primary text-primary-foreground"
                             : "bg-muted"
@@ -200,6 +208,7 @@ export default function Chat() {
                       </button>
                     </div>
                   )}
+                  <div ref={scrollRef}></div>
                 </ScrollArea>
               </CardContent>
               <CardFooter>
